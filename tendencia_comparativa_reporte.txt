@@ -1,0 +1,165 @@
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║         ANÁLISIS COMPARATIVO: DATOS CRUDOS vs FILTRADOS CON TÉCNICAS REALES  ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+INFORMACIÓN GENERAL
+═══════════════════════════════════════════════════════════════════════════════
+Fecha del análisis:    2026-05-18 11:35:54
+Datos crudos:          160,446 registros
+Variables analizadas:  7
+Técnicas de filtrado:  IQR (Rango Intercuartílico) + Mediana + Savitzky-Golay
+
+TÉCNICAS DE FILTRADO APLICADAS
+═══════════════════════════════════════════════════════════════════════════════
+1. REMOVER OUTLIERS CON IQR:
+   - Se calcula Q1 (percentil 25) y Q3 (percentil 75)
+   - IQR = Q3 - Q1
+   - Outliers: valores < (Q1 - 1.5*IQR) o > (Q3 + 1.5*IQR)
+   - Los outliers se reemplazan con la mediana
+
+2. FILTRO DE MEDIANA:
+   - Suaviza datos removiendo picos espurios
+   - Kernel size: 5 puntos
+
+3. SAVITZKY-GOLAY:
+   - Filtro polinómico (polyorder=3, window=101)
+   - Preserva características importantes mientras suaviza
+
+RESUMEN POR VARIABLE
+═══════════════════════════════════════════════════════════════════════════════
+
+
+1. RPM ROTOR
+   ┌─ DATOS CRUDOS (CON RUIDO Y OUTLIERS)
+   │  Media:          225.240598  |  Desv. Est.:   402.617161
+   │  Mín - Máx:        0.000000  -  11573.000000
+   │  Valores cero: 112,726 de 160,446
+   │
+   ├─ DATOS FILTRADOS (OUTLIERS REMOVIDOS + SUAVIZADO)
+   │  Media:          210.716216  |  Desv. Est.:   323.864486
+   │  Mín - Máx:        0.000000  -    717.000000
+   │  Valores cero: 112,726 (outliers removidos: 4309)
+   │
+   └─ IMPACTO DEL FILTRADO
+      ΔMedia:    14.524382  |  ΔStd:    78.752675  |  ΔMax: 10856.000000
+      Cambio media: 6.45%
+
+2. ACELERATION_CHUMACERA B
+   ┌─ DATOS CRUDOS (CON RUIDO Y OUTLIERS)
+   │  Media:            0.138810  |  Desv. Est.:     0.217821
+   │  Mín - Máx:        0.000000  -      1.853290
+   │  Valores cero: 111,538 de 160,446
+   │
+   ├─ DATOS FILTRADOS (OUTLIERS REMOVIDOS + SUAVIZADO)
+   │  Media:            0.137123  |  Desv. Est.:     0.211654
+   │  Mín - Máx:        0.000000  -      0.660958
+   │  Valores cero: 111,538 (outliers removidos: 2615)
+   │
+   └─ IMPACTO DEL FILTRADO
+      ΔMedia:     0.001687  |  ΔStd:     0.006168  |  ΔMax:     1.192332
+      Cambio media: 1.22%
+
+3. VELOCITY_CHUMACERA B
+   ┌─ DATOS CRUDOS (CON RUIDO Y OUTLIERS)
+   │  Media:            0.706310  |  Desv. Est.:     1.103676
+   │  Mín - Máx:        0.000000  -     11.539200
+   │  Valores cero: 111,538 de 160,446
+   │
+   ├─ DATOS FILTRADOS (OUTLIERS REMOVIDOS + SUAVIZADO)
+   │  Media:            0.714179  |  Desv. Est.:     1.106326
+   │  Mín - Máx:        0.000000  -      3.528230
+   │  Valores cero: 111,538 (outliers removidos: 1760)
+   │
+   └─ IMPACTO DEL FILTRADO
+      ΔMedia:     0.007869  |  ΔStd:     0.002650  |  ΔMax:     8.010970
+      Cambio media: 1.11%
+
+4. ENVELOPE_CHUMACERA B
+   ┌─ DATOS CRUDOS (CON RUIDO Y OUTLIERS)
+   │  Media:            0.408316  |  Desv. Est.:     0.677857
+   │  Mín - Máx:        0.000000  -     17.779800
+   │  Valores cero: 111,538 de 160,446
+   │
+   ├─ DATOS FILTRADOS (OUTLIERS REMOVIDOS + SUAVIZADO)
+   │  Media:            0.397776  |  Desv. Est.:     0.649047
+   │  Mín - Máx:        0.000000  -      2.561610
+   │  Valores cero: 111,538 (outliers removidos: 1060)
+   │
+   └─ IMPACTO DEL FILTRADO
+      ΔMedia:     0.010540  |  ΔStd:     0.028810  |  ΔMax:    15.218190
+      Cambio media: 2.58%
+
+5. ACELERATION_CHUMACERA A
+   ┌─ DATOS CRUDOS (CON RUIDO Y OUTLIERS)
+   │  Media:            0.153448  |  Desv. Est.:     0.236545
+   │  Mín - Máx:        0.000000  -      1.277510
+   │  Valores cero: 111,539 de 160,446
+   │
+   ├─ DATOS FILTRADOS (OUTLIERS REMOVIDOS + SUAVIZADO)
+   │  Media:            0.157148  |  Desv. Est.:     0.238390
+   │  Mín - Máx:        0.000000  -      0.641072
+   │  Valores cero: 111,539 (outliers removidos: 4710)
+   │
+   └─ IMPACTO DEL FILTRADO
+      ΔMedia:     0.003700  |  ΔStd:     0.001845  |  ΔMax:     0.636438
+      Cambio media: 2.41%
+
+6. VELOCITY_CHUMACERA A
+   ┌─ DATOS CRUDOS (CON RUIDO Y OUTLIERS)
+   │  Media:            0.579367  |  Desv. Est.:     0.933459
+   │  Mín - Máx:        0.000000  -     30.943900
+   │  Valores cero: 111,539 de 160,446
+   │
+   ├─ DATOS FILTRADOS (OUTLIERS REMOVIDOS + SUAVIZADO)
+   │  Media:            0.571971  |  Desv. Est.:     0.903447
+   │  Mín - Máx:        0.000000  -      3.120260
+   │  Valores cero: 111,539 (outliers removidos: 1162)
+   │
+   └─ IMPACTO DEL FILTRADO
+      ΔMedia:     0.007396  |  ΔStd:     0.030012  |  ΔMax:    27.823640
+      Cambio media: 1.28%
+
+7. ENVELOPE_CHUMACERA A
+   ┌─ DATOS CRUDOS (CON RUIDO Y OUTLIERS)
+   │  Media:            0.320966  |  Desv. Est.:     0.505995
+   │  Mín - Máx:        0.000000  -      5.443940
+   │  Valores cero: 111,539 de 160,446
+   │
+   ├─ DATOS FILTRADOS (OUTLIERS REMOVIDOS + SUAVIZADO)
+   │  Media:            0.311060  |  Desv. Est.:     0.481307
+   │  Mín - Máx:        0.000000  -      1.542870
+   │  Valores cero: 111,539 (outliers removidos: 2490)
+   │
+   └─ IMPACTO DEL FILTRADO
+      ΔMedia:     0.009905  |  ΔStd:     0.024688  |  ΔMax:     3.901070
+      Cambio media: 3.09%
+
+INTERPRETACIÓN
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ LÍNEAS DE TENDENCIA SUAVIZADAS:
+  - Rojo (Crudo): Muestra el ruido y variabilidad del sensor original
+  - Azul (Filtrado): Muestra la tendencia real sin outliers ni ruido
+
+✓ OUTLIERS (marcados con X en naranja):
+  - Valores atípicos detectados mediante IQR
+  - Fueron reemplazados con la mediana para suavizar
+
+✓ DESVIACIÓN ESTÁNDAR:
+  - Crudo: Mayor valor = más ruido en los datos
+  - Filtrado: Menor valor = datos más estables y limpios
+
+✓ APLICACIONES PRÁCTICAS:
+  - Los datos filtrados son más confiables para análisis de tendencias
+  - Mejoran la precisión de modelos predictivos (Random Forest, etc.)
+  - Permiten identificar patrones reales en lugar de ruido sensor
+
+ARCHIVOS GENERADOS
+═══════════════════════════════════════════════════════════════════════════════
+✓ tendencia_comparativa_[variable].png - Gráficos detallados para cada sensor
+✓ tendencia_comparativa_resumen_total.png - Comparación general de tendencias
+✓ tendencia_comparativa_tabla.csv - Tabla con estadísticas comparativas
+✓ tendencia_comparativa_reporte.txt - Este reporte
+
+═══════════════════════════════════════════════════════════════════════════════

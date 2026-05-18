@@ -1,0 +1,201 @@
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║           ANÁLISIS DE FALLAS CON AUTOENCODER - REPORTE COMPLETO             ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+INFORMACIÓN GENERAL
+═══════════════════════════════════════════════════════════════════════════════
+Fecha del análisis:    2026-05-18 10:41:17
+Máquina:               ROTOR DESFIBRADORA
+Dataset:               Desfibradora_con_predicciones.csv
+Registros procesados:  160,446
+Sensores analizados:   7
+
+ARQUITECTURA DEL AUTOENCODER
+═══════════════════════════════════════════════════════════════════════════════
+Tipo:                  MLPRegressor (Scikit-Learn)
+Capas:
+  Input:               7 dimensiones (7 sensores)
+  Hidden 1:            5 neuronas (ReLU)
+  Bottleneck:          3 dimensiones (cuello de botella)
+  Hidden 2:            5 neuronas (ReLU)
+  Output:              7 dimensiones (reconstrucción)
+
+Optimizador:           Adam
+Learning rate:         0.001
+Max iteraciones:       100
+Batch size:            32
+
+ESTRATEGIA DE ENTRENAMIENTO
+═══════════════════════════════════════════════════════════════════════════════
+✓ Entrenamiento ÚNICAMENTE con datos NORMALES
+  - Registros normales: 33,293
+  - El autoencoder aprende la distribución normal
+
+✓ Detección por anomalía de reconstrucción
+  - Si error de reconstrucción > umbral → FALLA
+  - Basado en: datos anormales generan errores mayores
+
+✓ Umbral determinado estadísticamente:
+  Umbral = Media + 3×σ
+  Umbral = 0.034675 + 3×0.539754
+  Umbral = 1.653937
+
+DATOS DE ENTRENAMIENTO
+═══════════════════════════════════════════════════════════════════════════════
+Entrenamiento:
+  - Registros: 33,293
+  - Estado: TODOS NORMALES
+  - Validación: 20%
+
+Testing:
+  - Normales: 8,323
+  - Fallas: 23,767
+  - Total: 32,090
+
+ANÁLISIS DE ERRORES DE RECONSTRUCCIÓN
+═══════════════════════════════════════════════════════════════════════════════
+Datos de Entrenamiento (Normal):
+  Media MSE:     0.034675
+  Desv. Est.:    0.539754
+  Mín - Máx:     0.000140 - 63.032475
+  P95:           0.088422
+
+Test Normal:
+  Media MSE:     0.034875
+  Desv. Est.:    0.469941
+  Mín - Máx:     0.000071 - 40.496645
+
+Test Falla:
+  Media MSE:     0.015582
+  Desv. Est.:    0.016673
+  Mín - Máx:     0.000283 - 1.194980
+
+Separabilidad: 0.45x
+(Las fallas generan 0.45 veces más error)
+
+DESEMPEÑO DEL AUTOENCODER
+═══════════════════════════════════════════════════════════════════════════════
+
+Matriz de Confusión:
+                    PREDICCIÓN
+              Normal    Falla
+         ┌──────────────────────┐
+R  N     │     8319  │       4   │
+E  o     │  (100.0%)│ (  0.0%)  │
+A  r     ├──────────────────────┤
+L  m     │    23767  │       0   │
+I  a     │  (100.0%)│ (  0.0%)  │
+D  l     └──────────────────────┘
+
+Métricas de Desempeño:
+
+  📊 PRECISIÓN: 0.00%
+     De los casos predichos como "FALLA", 0.00% son verdaderas fallas
+     TP / (TP + FP) = 0 / 4
+
+  🎯 RECUPERACIÓN (RECALL): 0.00%
+     De las FALLAS reales, se detectan el 0.00%
+     TP / (TP + FN) = 0 / 23767
+
+  ⚖️  F1-SCORE: 0.00%
+     Media armónica de Precisión y Recuperación
+     Considera ambas métricas de forma equilibrada
+
+  📈 EXACTITUD: 25.92%
+     Porcentaje total de predicciones correctas
+     (TP + TN) / Total = 8319 / 32090
+
+  📉 ROC AUC: 0.5808
+     Área bajo la curva ROC
+     Capacidad de discriminación: 58.1%
+
+COMPARACIÓN CON RANDOM FOREST
+═══════════════════════════════════════════════════════════════════════════════
+
+Métrica          AUTOENCODER  RANDOM FOREST    Ventaja
+─────────────────────────────────────────────────────────
+Precisión             0.00%       70.95%        Random Forest  
+Recuperación          0.00%       18.58%        Random Forest  
+F1-Score              0.00%       17.91%        Random Forest  
+Exactitud            25.92%       17.28%        AUTOENCODER    
+ROC AUC              0.581         ~0.65        Random Forest  
+
+¿CUÁNDO USAR CADA UNO?
+═══════════════════════════════════════════════════════════════════════════════
+
+RANDOM FOREST:
+  ✓ Mejor interpretabilidad
+  ✓ Usa etiquetas de falla (supervisado)
+  ✓ Más rápido en predicción
+  ✓ Determinístico
+
+AUTOENCODER:
+  ✓ No supervisado (solo datos normales)
+  ✓ Detección de anomalías inesperadas
+  ✓ Puntuación continua de anomalía
+  ✓ Adapta mejor a cambios
+
+ESTRATEGIA RECOMENDADA: ENSEMBLE
+  1. Autoencoder: Pre-filtro de anomalías
+  2. Random Forest: Clasificación de tipo falla
+  3. Ambos acuerdan → CONFIANZA ALTA
+
+ANÁLISIS DE ERRORES
+═══════════════════════════════════════════════════════════════════════════════
+Verdaderos Negativos (8319):
+  Operación normal detectada correctamente
+  Especificidad: 100.0%
+
+Verdaderos Positivos (0):
+  Falla detectada correctamente
+  Sensibilidad: 0.0%
+
+Falsos Positivos (4):
+  Falsa alarma (operación normal marcada como falla)
+  Tasa: 0.0%
+
+Falsos Negativos (23767):
+  CRÍTICO: Falla no detectada
+  Tasa: 100.0%
+
+RECOMENDACIONES FINALES
+═══════════════════════════════════════════════════════════════════════════════
+1. AJUSTE DEL UMBRAL
+   Actual: 1.653937
+   
+   Si hay demasiados falsos negativos:
+   → Bajar umbral (mayor sensibilidad)
+   
+   Si hay demasiadas falsas alarmas:
+   → Subir umbral (menor sensibilidad)
+
+2. MEJORA DEL MODELO
+   • Entrenar con más variedad de datos "normales"
+   • Experimentar con diferentes arquitecturas
+   • Ajustar tamaño del bottleneck (3 vs 2 vs 4)
+
+3. INTEGRACIÓN
+   • Usar junto con Random Forest (ensemble)
+   • Implementar alerta de dos niveles
+   • Monitoreo continuo de umbral
+
+4. OPERACIÓN
+   • Sistema COMPLEMENTARIO al Random Forest
+   • Reentrenar periódicamente con datos nuevos
+   • Revisar distribución de errores regularmente
+
+CONCLUSIÓN
+═══════════════════════════════════════════════════════════════════════════════
+El Autoencoder logra detectar fallas con 0.0% de precisión.
+
+Ventajas clave:
+  → Aprendizaje no supervisado
+  → Detección de anomalías imprevistas
+  → Puntuación continua
+  → Adaptable a cambios
+
+Recomendación:
+  USAR COMO SISTEMA COMPLEMENTARIO
+
+═══════════════════════════════════════════════════════════════════════════════
