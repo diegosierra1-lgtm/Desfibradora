@@ -240,6 +240,54 @@ Efecto: Preserva tendencias, elimina ruido
 ✅ Conclusión: Filtrado significativo de picos extremos
 ```
 
+#### **Aceleración CHUMACERA A**
+```
+📊 Estadísticas:
+  CRUDO:
+    Media:      0.153       Std:    0.237
+    Min-Max:    0 - 1.278
+    Outliers:   4,710
+    
+  FILTRADO:
+    Media:      0.030       Std:    0.118
+    Min-Max:    0 - 0.610
+    Cambio:     -80.37%
+    
+✅ Conclusión: Filtrado intenso; muchos valores extremos se reemplazaron por la mediana y la señal se estabiliza.
+```
+
+#### **Velocidad CHUMACERA A**
+```
+📊 Estadísticas:
+  CRUDO:
+    Media:      0.579       Std:    0.933
+    Min-Max:    0 - 30.944
+    Outliers:   1,162
+    
+  FILTRADO:
+    Media:      0.103       Std:    0.415
+    Min-Max:    0 - 2.955
+    Cambio:     -82.25%
+    
+✅ Conclusión: Filtrado agresivo; se atenúan los picos extremos y la tendencia queda mucho más homogénea.
+```
+
+#### **Envelope CHUMACERA A**
+```
+📊 Estadísticas:
+  CRUDO:
+    Media:      0.321       Std:    0.506
+    Min-Max:    0 - 5.444
+    Outliers:   2,490
+    
+  FILTRADO:
+    Media:      0.056       Std:    0.221
+    Min-Max:    0 - 1.445
+    Cambio:     -82.66%
+    
+✅ Conclusión: Filtrado muy fuerte; la envolvente se normaliza al eliminar picos extremos.
+```
+
 ### 2.4 Análisis Visual de Gráficas
 
 **Las gráficas de tendencia muestran**:
@@ -261,6 +309,20 @@ Efecto: Preserva tendencias, elimina ruido
 - Típicamente: valores extremos del sensor
 - Removidos e interpolados durante filtrado
 
+### 2.4.1 Observaciones específicas de CHUMACERA B
+
+- **Aceleración CHUMACERA B**: la señal es relativamente limpia, y el filtrado reduce picos sin modificar la media notablemente.
+- **Velocidad CHUMACERA B**: tenía picos extremos en crudo; el filtrado estabiliza la tendencia y clarifica el comportamiento real.
+- **Envelope CHUMACERA B**: presenta los picos más fuertes del grupo B; el proceso elimina outliers y deja una envolvente más consistente.
+
+### 2.4.2 Observaciones específicas de CHUMACERA A
+
+- **Aceleración CHUMACERA A**: el filtrado es muy intenso, con muchos outliers reemplazados por la mediana; la señal resultante queda mucho más homogénea.
+- **Velocidad CHUMACERA A**: los extremos se reducen drásticamente, lo que hace que la tendencia filtrada sea mucho más estable.
+- **Envelope CHUMACERA A**: el filtrado disminuye fuertemente los picos; la envolvente queda normalizada y refleja mejor el comportamiento real.
+
+> Estas seis mediciones de CHUMACERA A y B proporcionan una visión completa del comportamiento del rodamiento y son clave para diferenciar condiciones normales de degradación.
+
 ### 2.5 Conclusiones del Análisis de Tendencias
 
 ✅ **Datos de Buena Calidad**:
@@ -272,6 +334,7 @@ Efecto: Preserva tendencias, elimina ruido
 - RPM muestra estabilidad con picos ocasionales
 - Aceleraciones son relativamente bajas
 - Velocidades y envolventes correlacionadas
+- CHUMACERA B: aceleración, velocidad y envolvente mantienen tendencias suaves tras filtrado
 - Sin tendencias de degradación clara
 
 ✅ **Implicaciones**:
